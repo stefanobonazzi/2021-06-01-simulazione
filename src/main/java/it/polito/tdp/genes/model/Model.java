@@ -1,5 +1,7 @@
 package it.polito.tdp.genes.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,5 +45,37 @@ public class Model {
 		return String.format("Grafo creato con %d vertici e %d archi\n",
 				this.grafo.vertexSet().size(), this.grafo.edgeSet().size()) ;
 	}
+
+	public List<Genes> getEssentialGenes() {
+		return essentialGenes;
+	}
+	
+	public List<Adiacente> getGeniAdiacent(Genes g) {
+		List<Genes> vicini = Graphs.neighborListOf(this.grafo, g) ;
+		List<Adiacente> result = new ArrayList<>() ;
+		for(Genes v: vicini) {
+			result.add(new Adiacente(v, this.grafo.getEdgeWeight(this.grafo.getEdge(g, v)))) ;
+		}
+		Collections.sort(result) ;
+		return result ;
+		
+	}
 	
 }
+
+/*
+public List<Adiacenza> geniAdiacenti(Genes g){
+	Set<DefaultWeightedEdge> adiac= grafo.outgoingEdgesOf(g);
+	
+	List<Adiacenza> result = new ArrayList<Adiacenza>();
+	for(DefaultWeightedEdge d: adiac) {
+		result.add(new Adiacenza(g.getGeneId(), Graphs.getOppositeVertex(grafo, d, g).getGeneId(), grafo.getEdgeWeight(d)));
+	}
+	Collections.sort(result);
+	return result;
+	
+}*/
+
+//tmp.add(new Adiacenza(grafo.getEdgeSource(w),grafo.getEdgeTarget(w),grafo.getEdgeWeight(w)));
+
+

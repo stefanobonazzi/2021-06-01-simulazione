@@ -5,8 +5,10 @@
 package it.polito.tdp.genes;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.genes.model.Adiacente;
 import it.polito.tdp.genes.model.Genes;
 import it.polito.tdp.genes.model.Model;
 import javafx.event.ActionEvent;
@@ -30,7 +32,7 @@ public class FXMLController {
     private Button btnCreaGrafo; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbGeni"
-    private ComboBox<?> cmbGeni; // Value injected by FXMLLoader
+    private ComboBox<Genes> cmbGeni; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnGeniAdiacenti"
     private Button btnGeniAdiacenti; // Value injected by FXMLLoader
@@ -47,12 +49,32 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	String msg = model.creaGrafo() ;
+    	
+    	cmbGeni.getItems().clear() ;
+    	cmbGeni.getItems().addAll(model.getEssentialGenes()) ;
+    	
     	txtResult.appendText(msg);
     }
 
     @FXML
     void doGeniAdiacenti(ActionEvent event) {
-
+    	Genes g = cmbGeni.getValue() ;
+    	
+    	if(g==null) {
+    		txtResult.appendText("ERRORE: scegliere un gene\n");
+    		return ;
+    	}
+    	
+    	List<Adiacente> adiacenti = model.getGeniAdiacent(g) ;
+    	
+    	txtResult.appendText("Geni adiacenti a: "+g+"\n") ;
+    	if(adiacenti.size()==0) {
+    		txtResult.appendText("NESSUNO\n");
+    	} else {
+    		for(Adiacente a: adiacenti) {
+    			txtResult.appendText(a.getGene()+" "+a.getPeso()+"\n");
+    		}
+    	}
     	
     }
 
