@@ -55,6 +55,13 @@ public class FXMLController {
     	cmbGeni.getItems().addAll(model.getEssentialGenes()) ;
     	
     	txtResult.appendText(msg);
+    	
+        // Ri-abilita i bottoni
+        btnGeniAdiacenti.setDisable(false);
+        btnSimula.setDisable(false);
+        cmbGeni.setDisable(false);
+        txtIng.setDisable(false);
+
     }
 
     @FXML
@@ -117,6 +124,12 @@ public class FXMLController {
         assert txtIng != null : "fx:id=\"txtIng\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnSimula != null : "fx:id=\"btnSimula\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
+        
+        // Disabilita i bottoni (finché non verrà creato il grafo)
+        btnGeniAdiacenti.setDisable(true);
+        btnSimula.setDisable(true);
+        cmbGeni.setDisable(true);
+        txtIng.setDisable(true);
 
     }
     
