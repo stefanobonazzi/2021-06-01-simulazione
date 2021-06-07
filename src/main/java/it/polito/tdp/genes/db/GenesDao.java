@@ -6,11 +6,41 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.polito.tdp.genes.model.Genes;
+import it.polito.tdp.genes.model.Interactions;
 
 
 public class GenesDao {
+	
+	public List<Interactions> getInteractions(Map<String, Genes> genesIdMap) {
+		
+		String sql = "SELECT * FROM Interactions" ;
+		Connection conn = DBConnect.getConnection() ;
+		
+		List<Interactions> result = new ArrayList<>();
+		try {
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			ResultSet res = st.executeQuery() ;
+			
+			while(res.next()) {
+				Genes gene1 = genesIdMap.get(res.getString("geneID1")) ;
+				Genes gene2 = genesIdMap.get(res.getString("geneID2")) ;
+				
+				if( gene1!=null && gene2!=null && !gene1.equals(gene2) ) {
+					result.add(new Interactions(gene1, gene2,
+							res.getString("type"), res.getDouble("Expression_Corr"))) ;
+				}
+			}
+			conn.close();
+			return result ;
+		} catch(SQLException ex) {
+			throw new RuntimeException("Database error", ex) ;
+		}
+		
+		
+	}
 	
 	public List<Genes> getAllEssentialGenes(){
 		String sql = "SELECT DISTINCT GeneID, Essential, Chromosome FROM genes WHERE Essential='Essential' ORDER BY GeneID";
