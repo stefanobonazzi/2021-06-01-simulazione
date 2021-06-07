@@ -83,8 +83,18 @@ public class FXMLController {
     void doSimula(ActionEvent event) {
     	
     	Genes start = cmbGeni.getValue() ;
+    	if(start==null) {
+    		txtResult.appendText("ERRORE: scegliere un gene\n");
+    		return ;
+    	}
     	
-    	int n = Integer.parseInt(txtIng.getText()) ;
+    	int n ;
+    	try {
+    		n = Integer.parseInt(txtIng.getText()) ;
+    	} catch(NumberFormatException ex) {
+    		txtResult.appendText("ERRORE: numero di ingegneri è obbligatorio e deve essere un numero\n");
+    		return ;
+    	}
     	
     	Map<Genes, Integer> studiati = model.simulaIngegneri(start, n) ;
     	
